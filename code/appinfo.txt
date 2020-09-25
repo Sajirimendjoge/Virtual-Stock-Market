@@ -1,0 +1,73 @@
+package virtualstockmarket;
+
+
+/*
+import java.awt.*;
+
+import javax.swing.*;
+
+import java.io.*;
+
+
+public class appinfo extends JFrame
+
+{
+	public static void main(String arr[])
+    
+	{
+       
+		appinfo f=new appinfo();
+        Container c=f.getContentPane();
+        c.setBackground(Color.pink);
+        f.setTitle("Virtual Stock Market Application Information");
+        f.setSize(300, 300);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JLabel lb = new JLabel("The purpose of this application is to  provide a real share market atmosphere and treding practice to investers at beginner level"
+        		+ "  where he can benefit by gaining enough experience before investing real money into market. ");
+        c.add(lb);
+        f.setVisible(true);
+
+	}
+	
+   
+}
+*/
+
+
+
+
+
+
+import java.awt.*;
+import javax.swing.*;
+
+class appinfo {
+
+    public static void main(String[] args) {
+
+        Runnable r = new Runnable() {
+            public void run() {
+                String pt1 = "<html><body width='";
+                String pt2 =
+                    "'><h1> Virtual stock Market</h1>" +
+                    "<p>This application is very usefull to those to invest into share market but wish to gain some knowledge or experience before inversting the money," +
+                    " To  provide a real share market atmosphere and treding practice to investers at " 
+                    + " beginner level  where he can benefit by gaining enough experience before investing"
+                    +" real money into market..<br><br>" +
+                    "<p> " +
+                    "";
+                String pt3 =
+                    " " +
+                    "";
+
+                JPanel p = new JPanel( new BorderLayout() );
+
+                int width = 400;
+                String s = pt1 + width + pt2 + pt3 ;
+
+                JOptionPane.showMessageDialog(null, s);
+            }
+        };
+        SwingUtilities.invokeLater(r);
+    }
+}

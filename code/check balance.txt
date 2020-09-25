@@ -1,0 +1,469 @@
+package virtualstockmarket;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+public class showProfile extends JFrame implements ActionListener
+
+{
+	JLabel l1, l2, l3,l4;
+	JTextField tf1,tf2,tf3,tf4;
+	JButton btn1;
+	
+	
+	public showProfile(int)
+	{
+		    setTitle("virtualstockmarket");
+	        setBackground(Color.green);
+	        setSize(800, 800);
+	        setLayout(null);
+	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	        l1 = new JLabel("This Page displays the user information",JLabel.CENTER);
+	        l1.setForeground(Color.blue);
+	        l1.setFont(new Font("Serif", Font.BOLD, 20));
+	 
+	        l2 = new JLabel("Name");
+	        l3 = new JLabel("User id");
+	        l4 = new JLabel("Balance");
+	        tf1 = new JTextField();
+	        tf2 = new JTextField();
+	        btn1 = new JButton("OK");
+
+	        
+	        tf3 = new JTextField();
+	        l1.setBounds(100, 30, 400, 30);
+	        l2.setBounds(80, 90, 200, 30);
+	        l3.setBounds(80, 135, 200, 30);
+	        l4.setBounds(80, 180, 200, 30);
+	        tf1.setBounds(300, 90, 200, 30);
+	        tf3.setBounds(300, 137, 200, 30);
+	        tf2.setBounds(300, 180, 200, 30);
+	        btn1.setBounds(100, 300, 100, 30);
+
+	        add(l1);
+	        add(l2);
+	        add(l3);
+	        add(l4);
+	        add(tf1);
+	        add(tf2);
+	        add(tf3);
+	        add(btn1);
+
+	        setVisible(true);
+  
+			  
+		
+		
+		try
+	{
+	  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+	  String d = System.getProperty("driver");
+	  System.out.println(d);
+	  int flag = 0;
+               Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/record","root","sajiri");
+               if(con == null)
+               {
+            	  System.exit(0); 
+               }
+               Statement stmt = con.createStatement();
+               //String query="insert into userinfo(userid,name,pass) values(1,"asws","sdfds")";
+               ResultSet rs = stmt.executeQuery("select * from userinfo where id = "'+id+'";);
+               while(rs.next())
+               {
+            	  String snm = rs.getString(1);
+            	  String sid = rs.getString(2);
+            	  String Balance = rs.getString(3);
+            	  tf1.setText(snm);
+            	  tf1.setText(sid);
+            	  tf1.setText(Balance);
+
+               }
+               
+               con.close();
+               }
+	
+	catch(Exception exp)
+	{
+		exp.printStackTrace();
+	}
+}
+
+	
+	
+
+    btn1.addActionListener(this);
+    public void actionPerformed(ActionEvent e) 
+    if(e.getSource() == btn1)
+	  {
+		  	  this.dispose();
+	  }
+}
+
+
+///////
+
+package virtualstockmarket;
+
+
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+public class showBal extends JFrame implements ActionListener
+
+{
+	JLabel l1, l2;
+	JTextField tf1;
+	JButton btn1;
+	
+	
+	public showProfile(int)
+	{
+		    setTitle("virtualstockmarket");
+	        setBackground(Color.green);
+	        setSize(800, 800);
+	        setLayout(null);
+	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	        l1 = new JLabel("This Page displays the user information",JLabel.CENTER);
+	        l1.setForeground(Color.blue);
+	        l1.setFont(new Font("Serif", Font.BOLD, 20));
+	 
+	        
+	        l2 = new JLabel("Balance");
+	        tf1 = new JTextField();
+	        btn1 = new JButton("OK");
+
+	        
+	        l1.setBounds(100, 30, 400, 30);
+	        l2.setBounds(80, 90, 200, 30);
+	        tf1.setBounds(300, 90, 200, 30);
+	        btn1.setBounds(100, 300, 100, 30);
+
+	        add(l1);
+	        add(l2);
+	        add(tf1);
+	        add(btn1);
+
+	        setVisible(true);
+  
+			  
+		
+		
+		try
+	{
+	  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+	  String d = System.getProperty("driver");
+	  System.out.println(d);
+	  int flag = 0;
+               Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/record","root","sajiri");
+               if(con == null)
+               {
+            	  System.exit(0); 
+               }
+               Statement stmt = con.createStatement();
+               //String query="insert into userinfo(userid,name,pass) values(1,"asws","sdfds")";
+               ResultSet rs = stmt.executeQuery("select balance from userinfo where id = "'+id+'";);
+               while(rs.next())
+               {
+            	 
+            	  String Balance = rs.getString(3);
+            	 tf1.setText(Balance);
+
+               }
+               
+               con.close();
+               }
+	
+	catch(Exception exp)
+	{
+		exp.printStackTrace();
+	}
+}
+
+	
+	
+
+    btn1.addActionListener(this);
+    public void actionPerformed(ActionEvent e) 
+    if(e.getSource() == btn1)
+	  {
+		  	  this.dispose();
+	  }
+}
+////////
+
+
+package virtualstockmarket;
+
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+
+public class showboughttrancextends JFrame implements ActionListener
+
+{
+		JLabel l1, l2, l3,l4,l5;
+		JTextField tf1,tf2,tf3,tf4;
+		JButton btn1;
+		
+		
+		
+		public showboughttranc
+		{
+			    setTitle("virtualstockmarket");
+		        setBackground(Color.green);
+		        setSize(800, 800);
+		        setLayout(null);
+		        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+		        l1 = new JLabel("This Page displays the user information",JLabel.CENTER);
+		        l1.setForeground(Color.blue);
+		        l1.setFont(new Font("Serif", Font.BOLD, 20));
+		 
+		        l2 = new JLabel("ShareName");
+		        l3 = new JLabel("price");
+		        l4 = new JLabel("quantity");
+		        l5 = new JLable("Toatal price");
+		        tf1 = new JTextField();
+		        tf2 = new JTextField();
+		        btn1 = new JButton("OK");
+
+		       
+		    	        l1.setBounds(100, 30, 400, 30);
+		    	        l2.setBounds(80, 90, 200, 30);
+		    	        l3.setBounds(80, 135, 200, 30);
+		    	        l4.setBounds(80, 180, 200, 30);
+		    	        l5.setBounds(80, 215, 200, 30);
+		    	        tf1.setBounds(300, 90, 200, 30);
+		    	        tf3.setBounds(300, 135, 200, 30);
+		    	        tf2.setBounds(300, 180, 200, 30);
+		    	        tf4.setBounds(300, 215, 200, 30);
+	 	    	        btn1.setBounds(100, 300, 100, 30);
+
+		    	        add(l1);
+		    	        add(l2);
+		    	        add(l3);
+		    	        add(l4);
+		    	        add(tf1);
+		    	        add(tf2);
+		    	        add(tf3);
+		    	        add(tf4);
+		    	        add(btn1);
+
+		    	        setVisible(true);
+		      
+		    			  
+		    		
+		    		
+		    		try
+		    	{
+		    	  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+		    	  String d = System.getProperty("driver");
+		    	  System.out.println(d);
+		    	  int flag = 0;
+		                   Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/record","root","sajiri");
+		                   if(con == null)
+		                   {
+		                	  System.exit(0); 
+		                   }
+		                   Statement stmt = con.createStatement();
+		                   ResultSet rs = stmt.executeQuery("select * from boughtshare where id = "'+id+'";);
+		                   while(rs.next())
+		                   {
+		                	  String sharename = rs.getString(1);
+		                	  String quantity = rs.getString(2);
+		                	  String price = rs.getString(3);
+		                	  String Totalprice = rs.getString(4);
+
+		                	  tf1.setText(snm);
+		                	  tf1.setText(sid);
+		                	  tf1.setText(B);
+		                	  tf4.setText(Totalprice);
+
+		                   }
+		                   
+		                   con.close();
+		                   }
+		    	
+		    	catch(Exception exp)
+		    	{
+		    		exp.printStackTrace();
+		    	}
+		    }
+
+		    	
+		    	
+
+		        btn1.addActionListener(this);
+		        public void actionPerformed(ActionEvent e) 
+		        if(e.getSource() == btn1)
+		    	  {
+		    		  	  this.dispose();
+		    	  }
+		        btn1 = new JButton("OK");
+
+		        
+		        
+	}
+
+	
+}
+/////////////////
+
+
+package virtualstockmarket;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class showsoldtranc   extends JFrame implements ActionListener
+{
+	JLabel l1, l2, l3,l4,l5;
+	JTextField tf1,tf2,tf3,tf4;
+	JButton btn1;
+	
+	
+	
+	public showsoldtranc
+	{
+		    setTitle("virtualstockmarket");
+	        setBackground(Color.green);
+	        setSize(800, 800);
+	        setLayout(null);
+	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	        l1 = new JLabel("This Page displays the user information",JLabel.CENTER);
+	        l1.setForeground(Color.blue);
+	        l1.setFont(new Font("Serif", Font.BOLD, 20));
+	 
+	        l2 = new JLabel("ShareName");
+	        l3 = new JLabel("price");
+	        l4 = new JLabel("quantity");
+	        l5 = new JLable("Toatal price");
+	        tf1 = new JTextField();
+	        tf2 = new JTextField();
+	        btn1 = new JButton("OK");
+
+	       
+	    	        l1.setBounds(100, 30, 400, 30);
+	    	        l2.setBounds(80, 90, 200, 30);
+	    	        l3.setBounds(80, 135, 200, 30);
+	    	        l4.setBounds(80, 180, 200, 30);
+	    	        l5.setBounds(80, 215, 200, 30);
+	    	        tf1.setBounds(300, 90, 200, 30);
+	    	        tf3.setBounds(300, 135, 200, 30);
+	    	        tf2.setBounds(300, 180, 200, 30);
+	    	        tf4.setBounds(300, 215, 200, 30);
+ 	    	        btn1.setBounds(100, 300, 100, 30);
+
+	    	        add(l1);
+	    	        add(l2);
+	    	        add(l3);
+	    	        add(l4);
+	    	        add(tf1);
+	    	        add(tf2);
+	    	        add(tf3);
+	    	        add(tf4);
+	    	        add(btn1);
+
+	    	        setVisible(true);
+	      
+	    			  
+	    		
+	    		
+	    		try
+	    	{
+	    	  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+	    	  String d = System.getProperty("driver");
+	    	  System.out.println(d);
+	    	  int flag = 0;
+	                   Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/record","root","sajiri");
+	                   if(con == null)
+	                   {
+	                	  System.exit(0); 
+	                   }
+	                   Statement stmt = con.createStatement();
+	                   ResultSet rs = stmt.executeQuery("select * from soldshare where id = "'+id+'";);
+	                   while(rs.next())
+	                   {
+	                	  String sharename = rs.getString(1);
+	                	  String quantity = rs.getString(2);
+	                	  String price = rs.getString(3);
+	                	  String Totalprice = rs.getString(4);
+
+	                	  tf1.setText(snm);
+	                	  tf1.setText(sid);
+	                	  tf1.setText(B);
+	                	  tf4.setText(Totalprice);
+
+	                   }
+	                   
+	                   con.close();
+	                   }
+	    	
+	    	catch(Exception exp)
+	    	{
+	    		exp.printStackTrace();
+	    	}
+	    }
+
+	    	
+	    	
+
+	        btn1.addActionListener(this);
+	        public void actionPerformed(ActionEvent e) 
+	        if(e.getSource() == btn1)
+	    	  {
+	    		  	  this.dispose();
+	    	  }
+	        btn1 = new JButton("OK");
+
+	        
+	        
+}
+
+
+
+
+
+
+
+

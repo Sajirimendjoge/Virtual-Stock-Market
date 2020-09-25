@@ -1,0 +1,300 @@
+package virtualstockmarket;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
+public class mainpage extends JFrame
+
+{
+    String uname, upass;
+    public mainpage(final String uname) throws SQLException
+    {
+        this.uname=uname;
+        this.upass=upass;
+        setTitle("Virtual Stock Market");
+        setSize(1365, 750);        
+
+    	JLabel lb1;
+        
+        // Creates a menubar for a JFrame
+        JMenuBar mb = new JMenuBar();
+        
+        // Add the menubar to the frame
+        setJMenuBar(mb);
+        
+        // Define and add two drop down menu to the menubar
+        JMenu Profile = new JMenu("Profile");
+        JMenu script = new JMenu("Script");
+        JMenuItem buyscript = new JMenuItem("Buying Script");
+        JMenuItem sellscript = new JMenuItem("Selling Script");
+        JMenu balance = new JMenu("Balance");
+        JMenu Transaction = new JMenu(" Show Transaction");
+        JButton Logout = new JButton("Logout");
+       
+        
+        //actionlistener to buying script
+        script.add(buyscript);
+        buyscript.addActionListener((ActionListener)new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            
+            {
+            
+            
+            	    buyshare sp = new buyshare(uname);
+            	    sp.show();
+            	  
+            }    
+          });
+			
+        //actionlistener to selling script
+
+          script.add(sellscript);
+        sellscript.addActionListener((ActionListener)new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            
+            {
+            
+            
+            	    sellshare sp = new sellshare(uname);
+            	    sp.show();
+            	    
+            }    
+          });
+             
+        
+        
+
+
+        lb1 = new JLabel("hgvkuvk",JLabel.CENTER);
+        lb1.setForeground(Color.blue);
+        lb1.setFont(new Font("Serif", Font.BOLD, 80));
+        lb1.setBounds(100, 30, 400, 30);
+
+        setVisible(true);
+
+        
+        mb.add(Profile);
+        mb.add(script);
+        mb.add(balance);
+        mb.add(Logout);
+        mb.add(Transaction);
+        
+       
+        
+        // Create and add simple menu item to one of the drop down menu
+        JMenuItem pro = new JMenuItem("my Profile");
+        JMenuItem show = new JMenuItem("show");
+        JMenuItem update= new JMenuItem("update");
+        JMenuItem boughtscript = new JMenuItem("Bought script");
+        JMenuItem soldscript = new JMenuItem("Sold script");
+        balance.add(show);
+        balance.add(update);
+        Transaction.add( boughtscript);
+        Transaction.add( soldscript);
+        balance.addSeparator();
+        Profile.add(pro); 
+        
+        final Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Virtualstockmarket","root","sajiri");
+        if(con == null)
+        {
+     	  System.exit(0); 
+        }
+        
+       
+        //actionlistener to my profile
+               pro.addActionListener((ActionListener)new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            
+            {
+            
+            
+            	    showProfile sp = new showProfile(uname);
+            	    sp.show();
+            	   
+            }    
+          });
+			
+
+        //actionlistener to check balance
+
+        
+        show.addActionListener((ActionListener)new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            
+            {
+            	 Statement stmt = null;
+				try {
+					stmt = con.createStatement();
+				
+					
+				
+                 ResultSet rs = null;
+				
+					rs = stmt.executeQuery("select balance from userinfo where userid='"+uname+"';");
+					while(rs.next())
+					{
+						String balance=rs.getString(1);
+						JOptionPane.showMessageDialog(null,"Your total balance is"+balance);
+					}
+					
+				
+				} catch (SQLException e1) {
+					
+					e1.printStackTrace();
+				}
+            	   // showBal sb = new showBal(id);
+            	    //sb.show();
+            	    //dispose();
+            }    
+          });
+        
+        
+        
+
+        update.addActionListener((ActionListener)new ActionListener()
+     {
+         public void actionPerformed(ActionEvent e) 
+         
+         {
+         	    updatebal ub = new updatebal(uname);
+         	    ub.show();
+         	    //dispose();
+         }    
+       });
+             
+    
+    
+    
+   
+    
+    
+           boughtscript.addActionListener((ActionListener)new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            
+            {
+                                	
+            	    showboughttranc sbt = new showboughttranc(uname);
+            	   // sbt.show();
+            	  
+            	    dispose();
+            }    
+          });
+           
+     
+        soldscript.addActionListener((ActionListener)new ActionListener()
+           {
+               public void actionPerformed(ActionEvent e) 
+               
+               {
+            	   showsoldtranc sst= new showsoldtranc(uname);
+               	    dispose();
+               }    
+             });
+              
+        
+     
+          
+           Logout.addActionListener((ActionListener)new ActionListener()
+           {
+               public void actionPerformed(ActionEvent e) 
+               
+               {
+					JOptionPane.showMessageDialog(null,"Are you sure you want to Logout?");
+  
+            	   
+               		new Login();
+               	    dispose();
+               }    
+             });
+           
+           
+           
+           
+
+           
+          
+         
+             
+             
+             
+             
+           
+           
+          
+    }
+    
+}
+           
+           
+    /*      
+        
+        soldscript.addActionListener((ActionListener)new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) 
+            
+            {
+            	    showsoldtranc sst = new showsoldtranc(id);
+            	    sst.show();
+            	    //dispose();
+            }    
+          });
+        
+        
+       
+ */        
+   
+        
+       
+        
+   /*
+       
+    
+     
+        
+        //profile.addActionListener(new ActionListener() {
+           
+        	//public void actionPerformed(ActionEvent arg0)
+        	{
+                System.out.println("jhb");
+            }
+        //});
+    
+
+
+           
+	
+    public static void main(String[] args) 
+    {
+	    mainpage me = new mainpage(int uname);
+        me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        me.setVisible(true);
+    }
+*/      
+

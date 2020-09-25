@@ -1,0 +1,189 @@
+package virtualstockmarket;
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.PrintStream;
+import java.sql.*;
+ 
+public class newuser extends JFrame implements ActionListener 
+  { 
+    JLabel l1, l2, l3, l4, l5,l6;
+    JTextField tf1, tf2, tf5;
+    JButton btn1, btn2;
+    JPasswordField p1, p2;
+    JRadioButton rb1,rb2;
+	private Object psmt1; 
+    
+    newuser()
+     {
+        setSize(700, 700);
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle(" Virtual Stock Market");
+ 
+        l1 = new JLabel("New User Registration");
+        l1.setForeground(Color.blue);
+        l1.setFont(new Font("Serif", Font.BOLD, 20));
+ 
+        l2 = new JLabel("Name:");
+        l3 = new JLabel("Gender");
+        l4 = new JLabel("Email-ID:");
+        l5 = new JLabel("Create Passowrd:");
+        l6 = new JLabel("Confirm Password:");
+      
+        
+        tf1 = new JTextField();
+        rb1 = new JRadioButton("Male");
+        rb2 = new JRadioButton("Female"); 
+        tf2 = new JTextField();
+        p1 = new JPasswordField();
+        p2 = new JPasswordField();
+        
+        
+        btn1 = new JButton("Submit");
+        btn2 = new JButton("Clear");
+ 
+        btn1.addActionListener(this);
+        btn2.addActionListener(this);
+ 
+        l1.setBounds(100, 30, 400, 30);
+        l2.setBounds(80, 70, 200, 30);
+        l3.setBounds(80, 110, 200, 30);
+        l4.setBounds(80, 150, 200, 30);
+        l5.setBounds(80, 190, 200, 30);
+        l6.setBounds(80, 230, 200, 30);
+        
+        
+        tf1.setBounds(300, 70, 200, 30);
+        rb1.setBounds(300, 110, 80, 30);
+        rb2.setBounds(380, 110, 100, 30);
+        tf2.setBounds(300, 150, 200, 30);
+        p1.setBounds(300, 190, 200, 30);
+        p2.setBounds(300, 230, 200, 30);
+       
+        
+        btn1.setBounds(50, 350, 100, 30);
+        btn2.setBounds(170, 350, 100, 30);
+ 
+        add(l1);
+        add(l2);
+        add(tf1);
+        add(l3);
+        add(tf2);
+        add(l4);
+        add(p1);
+        add(l5);
+        add(p2);
+        add(l6);
+        add(rb1);
+        add(rb2);
+        
+        add(btn1);
+        add(btn2);
+        setVisible(true);
+     }  
+    
+ /*
+   
+                    DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+                    Connection con = DriverManager.getConnection("jdbc:mysql:\\localhost\record","root","sajiri");
+                    
+          catch (Exception ex) 
+                {
+                    System.out.println(ex);
+                }
+            }
+          else
+           {
+                JOptionPane.showMessageDialog(btn1, "Password Does Not Match");
+            } 
+            
+        } 
+   
+        else
+       {
+            tf1.setText("");
+            tf2.setText("");
+            p1.setText("");
+            p2.setText("");
+            
+           
+    }    }
+*/
+
+    
+    
+    
+    
+    
+        
+    
+
+	  public void actionPerformed(ActionEvent e)
+	    {
+		  if(e.getSource() == btn1)
+		  {
+			    String s1 = tf1.getText();
+	            String s2 = tf2.getText();
+	            char[] s3 = p1.getPassword();
+	            char[] s4 = p2.getPassword(); 
+	            String s8 = new String(s3);
+	            String s9 = new String(s4);
+	            System.out.println(s8);
+	            System.out.println(s9);
+	              Object pstmt;
+				if (s8.equals(s9))
+	              {
+		       	  try
+			    	{
+					  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+					  String d = System.getProperty("driver");
+					  System.out.println(d);
+				      int flag =0;
+					  Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Virtualstockmarket","root","sajiri");
+		                   if(con == null)
+		                   {
+		                	  System.exit(0); 
+		                   }
+		             
+		                  String query = "insert into userinfo(userid, name, pass,balance) values(?, ?, ? ,?)";
+					     PreparedStatement pstmt1 = con.prepareStatement(query); // create a statement
+					      
+					      
+		                    // set input parameter 1
+					      pstmt1.setInt(1, 1);
+					      pstmt1.setString(2,s1 ); // set input parameter 2
+					      pstmt1.setString(3, s8); // set input parameter 3
+					      //psmt1.setvalue(4,1000);
+					      pstmt1.executeUpdate(); // execute insert statement
+					      mainpage m = new mainpage(int userno);
+	    				  m.show();
+	    				  this.dispose();
+		       	 
+			    	}catch (Exception e1) 
+		       	      {
+					     e1.printStackTrace();
+					  }
+	              }
+		  }     
+	    }
+	  
+	  
+		  public static void main( String args[] )
+		  {
+			  new newuser();
+		  }
+    
+} 
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,136 @@
+package virtualstockmarket;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+public class showProfile extends JFrame //implements ActionListener
+
+{
+	JLabel l1, l2, l3,l4;
+	JTextField tf1,tf2,tf3,tf4;
+	JButton btn1;
+	
+	String uname;
+	public showProfile(String uname)
+	{
+		    setTitle("virtualstockmarket");
+	        setBackground(Color.green);
+	        setSize(800, 800);
+	        setLayout(null);
+	        this.uname = uname;
+	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	        l1 = new JLabel("This Page displays the user information",JLabel.CENTER);
+	        l1.setForeground(Color.blue);
+	        l1.setFont(new Font("Serif", Font.BOLD, 20));
+	 
+	        l2 = new JLabel("Name");
+	        l3 = new JLabel("User id");
+	        l4 = new JLabel("Balance");
+	        tf1 = new JTextField();
+	        tf2 = new JTextField();
+	        btn1 = new JButton("OK");
+
+	        
+	        tf3 = new JTextField();
+	        l1.setBounds(100, 30, 400, 30);
+	        l2.setBounds(80, 90, 200, 30);
+	        l3.setBounds(80, 135, 200, 30);
+	        l4.setBounds(80, 180, 200, 30);
+	        tf1.setBounds(300, 90, 200, 30);
+	        tf3.setBounds(300, 137, 200, 30);
+	        tf2.setBounds(300, 180, 200, 30);
+	        btn1.setBounds(100, 300, 100, 30);
+
+	        add(l1);
+	        add(l2);
+	        add(l3);
+	        add(l4);
+	        add(tf1);
+	        add(tf2);
+	        add(tf3);
+	        add(btn1);
+
+	        try
+	    	{
+	    	  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+	    	  String d = System.getProperty("driver");
+	    	  System.out.println(d);
+	    	  int flag = 0;
+	                   Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Virtualstockmarket","root","sajiri");
+	                   if(con == null)
+	                   {
+	                	  System.exit(0); 
+	                   }
+	                   Statement stmt = con.createStatement();
+	                   ResultSet rs =null;
+	    				rs = stmt.executeQuery("select username,userid,balance from userinfo where userid='"+uname+"';");
+	    				
+	                   while(rs.next())
+	                   {
+	                	  String snm = rs.getString(1);
+	                	  String sid = rs.getString(2);
+	                	  String Balance = rs.getString(3);
+	                	  System.out.println(snm);
+	                	  System.out.println(Balance);
+	                	  System.out.println(sid);
+	                	  tf1.setText(snm);
+	                	  tf2.setText(sid);
+	                	  tf3.setText(Balance);
+
+	                   }
+	                   
+	                   con.close();
+	                   }
+	    	
+	    	catch(Exception exp)
+	    	{
+	    		exp.printStackTrace();
+	    	}
+	    	
+	    	
+
+	        setVisible(true);
+	}
+			  
+	
+		
+			        
+	  
+
+	
+	
+
+ /*   btn1.addActionListener(this);
+    public void actionPerformed(ActionEvent e) 
+    if(e.getSource() == btn1)
+	  {
+		  	  this.dispose();
+	  }
+}
+
+	        
+	        public static void main(String arr[])
+	        {
+	    	new showProfile();   
+	        }
+
+@Override
+public void actionPerformed(ActionEvent arg0) {
+	// TODO Auto-generated method stub*/
+	
+
+	}

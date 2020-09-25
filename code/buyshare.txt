@@ -1,0 +1,379 @@
+package virtualstockmarket;
+
+import javax.swing.*;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+ 
+public class buyshare extends JFrame implements ActionListener
+{
+	JLabel l1, l2,l3,l4;
+    JTextField tf1,tf2;
+    JButton jbt1,jbt2,jbt3;
+    JComboBox box;
+    String shr;
+    String uname;
+	public buyshare(String uname) 
+    {
+		this.uname = uname;
+        initialize();
+    }
+    
+    
+ 
+    private void initialize() 
+    {    
+    	
+        setTitle("start buying the shares");
+        setBackground(Color.green);
+        setSize(1500, 1500);
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        l1 = new JLabel("Hello. buy any share from the given list",JLabel.CENTER);
+        l1.setForeground(Color.blue);
+        l1.setFont(new Font("Serif", Font.BOLD, 20));
+        l2 = new JLabel("Share Name");
+        box = new JComboBox();
+        box.setEditable(true);
+        l3 = new JLabel("Quantity");
+        l4 = new JLabel("Price");
+        tf1 = new JTextField();
+        tf2 = new JTextField();
+        jbt1 = new JButton("Submit");
+        jbt1.addActionListener(this);
+        jbt2 = new JButton("Fetch the share price");
+        jbt2.addActionListener(this);
+        jbt3 = new JButton("Back to account");
+        jbt3.addActionListener(this);
+
+        
+       
+        box.addItem("TATA");
+        box.addItem("HINDALKO");
+        box.addItem("HDC");
+        box.addItem("ICICI");
+        box.addItem("unitech"); 
+        box.addItem("sanghi industries");
+        box.addItem("virtual global education");
+        box.addItem("suzlon enery");
+        box.addItem("SUN-FARMA");  //international ltd,virtual global eduacation,sanghi industries ltd,suzlon enery,unitech
+
+        
+        l1.setBounds(100, 30, 400, 30);
+        l2.setBounds(100, 100, 200, 30);
+        l3.setBounds(100, 180, 200, 30);
+        l4.setBounds(100, 260, 200, 30);
+        tf1.setBounds(220, 180, 200, 30);
+        tf2.setBounds(220, 260, 200, 30);
+        jbt1.setBounds(120, 360, 100, 30);
+        jbt2.setBounds(500, 50, 250, 30);
+        //jbt3.setBounds(800, 500, 250, 30);
+        box.setBounds(220, 100, 100, 30);
+        
+        
+        add(l1);
+        add(l2);
+        add(l3);
+        add(l4);
+        add(tf1);
+        add(tf2);
+        add(jbt1);
+        add(jbt2);
+      //  add(jbt3);
+
+        add(box);
+        box.setVisible(true);
+        
+    }        
+    
+
+        
+        
+   
+   
+    public void actionPerformed(ActionEvent e)
+    {
+	  if(e.getSource() == jbt1)
+	  {
+		    String num1 = tf1.getText();
+            String num2 = tf2.getText();
+            int n1 = Integer.parseInt(num1);
+            int n2 = Integer.parseInt(num2);
+            shr = box.getSelectedItem().toString();
+           int total = n1*n2; 
+	       	  try
+		    	{
+				  DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+				  String d = System.getProperty("driver");
+				  System.out.println(d);
+			      int flag =0;
+				  Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Virtualstockmarket","root","sajiri");
+	                   if(con == null)
+	                   {
+	                	  System.exit(0); 
+	                   }
+	                   Statement stmt = con.createStatement();
+	                   ResultSet rs =null;
+	    				rs = stmt.executeQuery("select userno,balance from userinfo where userid='"+uname+"';");
+	                   rs.next();
+	                	  String sid = rs.getString(1);
+	                	  String Balance = rs.getString(2);
+	                	  
+	                	  System.out.println(Balance);
+	                	  System.out.println(sid);
+	                	  int bal = Integer.parseInt(Balance);
+	                	  int no = Integer.parseInt(sid);
+	                	  if(total>bal)
+	                	  {
+	                		  JOptionPane.showMessageDialog(null, "Your balance is insufficient to complete this transaction");  
+	                	  }
+	                	  else
+	                	  {
+	                		  bal=bal-total;
+	                  String query = "insert into bought(userno,sharename,bquantity,bprice,totalbprice)values(?,?,?,?,?)";
+	                  String query1 = "update userinfo set balance= '"+bal+"'where userid = '"+uname+"';";
+
+	                  
+				     PreparedStatement pstmt1 = con.prepareStatement(query); // create a statement
+				      pstmt1.setInt(1, no);
+  				      pstmt1.setString(2,shr );
+  				      pstmt1.setInt(3,n1 );
+  				      pstmt1.setFloat(4,n2 );
+  				      pstmt1.setFloat(5,total );
+  				      // set input parameter 2
+				      pstmt1.executeUpdate(); // execute insert statement
+				      pstmt1.close();
+  				      JOptionPane.showMessageDialog(null, "Transaction Successful"); 
+				      pstmt1 = con.prepareStatement(query1);
+				      pstmt1.executeUpdate(); // execute insert statement
+  				      
+				      dispose();
+  				  /*  jbt3 .addActionListener((ActionListener)new ActionListener()
+	                   {
+	                       public void actionPerformed(ActionEvent e)
+	                       
+	                       {
+	                       
+	                       try
+	                       {
+	                       	    mainpage m= new mainpage(uname);
+	                       	    m.show();
+	                       	    
+	                       	    dispose();
+	                       }
+	                       
+	                       catch (Exception e1)
+	                       {
+	                    	   {
+	           	    		e1.printStackTrace();
+	           	    	       }
+	                    	}
+	                      }
+
+						private void dispose() {
+							// TODO Auto-generated method stub
+							
+						}    
+	                     });
+	                        
+				    */
+				    
+		    	}
+		    	} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	         	
+	  	
+	  }             	  
+	   	  
+	                	  
+	  if(e.getSource() == jbt2)
+	{
+		  
+		  {		  		JOptionPane.showMessageDialog(null, "Please get the original price from this site");  
+		  	//box.lostFocus(jbt2,box.getSelectedItem());
+    		 String URL="https://in.finance.yahoo.com/";
+      	try 
+      	{
+      		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+      	}
+      	catch (IOException e1)
+      	{
+      
+      		e1.printStackTrace();
+      	}
+      }
+		  
+		  
+		  
+                /* if(shr.equals("TATA"))
+                 {		  		JOptionPane.showMessageDialog(null, "You are buying TATA");  
+
+		       		 String URL="https://in.finance.yahoo.com/";
+		         	try 
+		         	{
+		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+		         	}
+		         	catch (IOException e1)
+		         	{
+		         
+		         		e1.printStackTrace();
+		         	}
+                 }
+                 else if(shr.equals("HINDALKO"))
+                 {		  		JOptionPane.showMessageDialog(null, "you are buying Hindalko");  
+
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 }
+                 else if(shr.equals("SUN-FARMA"))
+                 {
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 }
+                 else if(shr.equals("ICICI"))
+                 {
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 } 
+                 else if(shr.equals("virtual global education"))
+                 {
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 } 
+                 else if(shr.equals("sanghi industries"))
+                 {
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 } 
+                 else if(shr.equals("suzlon enery"))
+                 {
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 } 
+              
+                 else if(shr.equals("unitech"))
+                 {
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 } 
+                 
+                
+                 else if(shr.equals("HDC"))
+                 {
+                	 String URL="https://in.finance.yahoo.com/";
+ 		         	try 
+ 		         	{
+ 		         		java.awt.Desktop.getDesktop().browse(java.net.URI.create(URL));
+ 		         	}
+ 		         	catch (IOException e1)
+ 		         	{
+ 		         
+ 		         
+ 		         		e1.printStackTrace();
+ 		         	}
+                 } 
+                  */ 
+	} 	  
+
+		    	
+				
+       	  
+	  
+	       	  
+	  
+	  }
+    }
+
+
+
+
+	  
+        
+	  
+
+    
+   
+    
+    
+    
+    
+
+  /*  public static void main(String[] args)
+    {
+        
+    	SwingUtilities.invokeLater(new Runnable() 
+        {
+            public void run() {
+                new buyshare().setVisible(true);
+        }
+        });
+    }*/
